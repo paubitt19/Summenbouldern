@@ -13,7 +13,13 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>Summenbouldern_Rechner</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="preload" href="fonts/bricolage-grotesque-800.woff" as="font" type="font/woff" crossorigin>
+<style>
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-500.woff") format("woff");font-weight:500;font-display:swap}
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/bricolage-grotesque-800.woff") format("woff");font-weight:800;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url("fonts/atkinson-hyperlegible-400.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Atkinson Hyperlegible";src:url("fonts/atkinson-hyperlegible-700.woff") format("woff");font-weight:700;font-display:swap}
+</style>
 <style>
 /* Layout: one-screen app. Step 1 team count, step 2 names + mode, then a grid with one column per team, numbers 1–9 down each column. */
 :root{
@@ -596,6 +602,11 @@ $("resetBtn").addEventListener("click",()=>{
   clearTimeout(armed);armed=null;b.textContent=label;b.classList.remove("warn");
   newRound();update();renderClock();
 });
+
+/* Offline: cache the app on first visit so it works without internet */
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
+  window.addEventListener("load",()=>{try{navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}});
+}
 
 /* Boot */
 document.documentElement.lang="de";
